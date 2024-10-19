@@ -142,6 +142,17 @@ function woocommerce_theme_scripts() {
 	wp_style_add_data( 'woocommerce_theme-style', 'rtl', 'replace' );
 
 	wp_enqueue_script( 'woocommerce_theme-navigation', get_template_directory_uri() . '/js/navigation.js', array(), _S_VERSION, true );
+	
+	// Thêm thư viện icon, css và font
+	wp_enqueue_style('bootstrap.icon', 'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css', array(), '1.3.0', 'all');
+
+	// Đường dẫn tới file CSS trong thư mục theme
+	wp_enqueue_style('bootstrap.css', get_template_directory_uri() . '/css/style.css', array(), '5.3.1', 'all');
+
+	// Sử dụng wp_enqueue_style cho Google Fonts
+	wp_enqueue_style('font.sansource', 'https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;0,700;1,600&display=swap', array(), '1.0.1', 'all');
+	wp_enqueue_style('font.nunito', 'https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap', array(), '1.0.2', 'all');
+
 
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
