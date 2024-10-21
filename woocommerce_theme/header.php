@@ -24,7 +24,41 @@
 <?php wp_body_open(); ?>
 <div id="page" class="site">
 	<a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e( 'Skip to content', 'woocommerce_theme' ); ?></a>
-
+	<!-- Topbar Menu -->
+	<div class="topbar pt-2">
+		<div class="container">
+			<div class="row">
+				<div class="col-5">
+					<ul class="topbar__list-left d-flex justify-content-start gap-3 flex-md-column flex-lg-row">
+						<li class="d-flex align-items-center">
+							<i class="bi bi-telephone rounded-circle"></i>
+							<a class="text-decoration-none" href="tel:0123456789">+84 123 456 789</a>
+						</li>
+						<li class="d-flex align-items-center">
+							<i class="bi bi-envelope rounded-circle"></i>
+							<a class="text-decoration-none" href="mailto:vochuong57@gmail.com">vochuong57@gmail.com</a>
+						</li>
+					</ul>
+				</div>
+				<div class="col-7">
+					<ul class="topbar__list-left d-flex justify-content-end gap-lg-5 flex-md-column flex-lg-row gap-md-3">
+						<li class="d-flex align-items-center">
+							<i class="bi bi-truck rounded-circle"></i>
+							Free VN Shipping
+						</li>
+						<li class="d-flex align-items-center">
+							<i class="bi bi-clock-history rounded-circle"></i>
+							30 Day Menu Back
+						</li>
+						<li class="d-flex align-items-center">
+							<i class="bi bi-person rounded-circle"></i>
+							24/7 Customer Support
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
 	<header id="masthead" class="site-header">
 		<div class="site-branding">
 			<?php
