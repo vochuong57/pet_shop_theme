@@ -48,3 +48,45 @@ $theme-colors: map-merge($theme-colors, $custom-color);
     }
   }
 }
+.site-header{
+  .custom-logo-link{
+    padding-left: 70px;
+  }
+  .custom-logo-link img{
+    height: auto;
+    width: 80px;
+  }
+  .aws-search-field{
+    padding-left: 1.4rem;
+    font-size: 15px;
+    border-radius: 25px !important;
+  }
+  .aws-search-btn {
+    display: none !important;
+  }
+
+}
+.main-navigation{
+  font-weight: 400;
+  font-size: 15px;
+  text-transform: uppercase;
+  color: $white;
+  .menu-toggle{
+    background-color: $primary;
+    color: $white;
+    border: none !important;
+  }
+  li.current-menu-item{
+    background-color: #9d2b9d;
+  }
+  li.menu-item{
+    padding: 1rem 1.4rem;
+    transition: all .5s;
+    &:hover{
+      background-color: #9d2b9d;
+    }
+    a{
+      color: $white;
+    }
+  }
+}
