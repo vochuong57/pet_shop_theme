@@ -149,6 +149,9 @@ function woocommerce_theme_scripts() {
 	// Đường dẫn tới file CSS trong thư mục theme
 	wp_enqueue_style('bootstrap.css', get_template_directory_uri() . '/css/style.css', array(), '5.3.1', 'all');
 
+	// Đường dẫn tới file js
+	wp_enqueue_script('bootsrap.js', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js', 'jQuery', '2.3.1', true);
+
 	// Sử dụng wp_enqueue_style cho Google Fonts
 	wp_enqueue_style('font.sansource', 'https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;0,700;1,600&display=swap', array(), '1.0.1', 'all');
 	wp_enqueue_style('font.nunito', 'https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap', array(), '1.0.2', 'all');
