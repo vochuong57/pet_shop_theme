@@ -82,7 +82,7 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-12 d-flex justify-content-center align-items-center">
-						<i class="bi bi-list d-sm-block d-md-none"></i>
+						<i class="bi bi-list"></i>
 						<button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false"><?php esc_html_e( 'Primary Menu', 'woocommerce_theme' ); ?></button>
 					</div>
 					<div class="col-12 d-md-flex justify-content-md-center text-center">
