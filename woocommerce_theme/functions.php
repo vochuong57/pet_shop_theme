@@ -195,6 +195,7 @@ if ( defined( 'JETPACK__VERSION' ) ) {
  */
 add_filter( 'woocommerce_add_to_cart_fragments', 'woocommerce_header_add_to_cart_fragment' );
 
+//AJAX cart
 function woocommerce_header_add_to_cart_fragment( $fragments ) {
 	global $woocommerce;
 
@@ -206,3 +207,320 @@ function woocommerce_header_add_to_cart_fragment( $fragments ) {
 	$fragments['a.cart-customlocation'] = ob_get_clean();
 	return $fragments;
 }
+
+// Embed woocommerce
+add_theme_support('woocommerce'); 
+
+// Hook: woocommerce_archive_description
+add_action( 'woocommerce_archive_description', 'woocommerce_taxonomy_archive_description' );
+function woocommerce_taxonomy_archive_description(){
+	?>
+		<h5>Chất lượng - Uy tín - An toàn</h5>
+	<?php
+}
+
+//Hook: woocommerce_before_shop_loop
+// add_action( 'woocommerce_before_shop_loop', 'notice', 1 );
+// function notice(){
+	
+// }
+
+//--------------------------------RESULT SEARCH--------------------------
+
+// Xóa hành động mặc định
+remove_action( 'woocommerce_before_shop_loop', 'woocommerce_result_count', 20 );
+
+// Thêm lại hành động với văn bản tùy chỉnh
+add_action( 'woocommerce_before_shop_loop', 'custom_woocommerce_result_count', 20 );
+
+function custom_woocommerce_result_count() {
+    global $wp_query;
+    
+    if ( ! woocommerce_products_will_display() ) {
+        return;
+    }
+
+    $total    = $wp_query->found_posts;
+    $per_page = $wp_query->query_vars['posts_per_page'];
+    $current  = max( 1, $wp_query->get( 'paged' ) );
+    $first    = ( $per_page * $current ) - $per_page + 1;
+    $last     = min( $total, $per_page * $current );
+
+    // Thay đổi nội dung hiển thị dựa vào tổng sản phẩm
+    if ( $total <= 10 ) {
+        $result_text = sprintf( __( 'Chỉ có %d sản phẩm', 'text-domain' ), $total );
+    } elseif ( $total > 10 && $total <= 20 ) {
+        $result_text = sprintf( __( 'Đang hiển thị %d–%d của %d sản phẩm', 'text-domain' ), $first, $last, $total );
+    } else {
+        $result_text = sprintf( __( 'Có tổng cộng %d sản phẩm', 'text-domain' ), $total );
+    }
+    
+    echo '<p class="woocommerce-result-count">' . $result_text . '</p>';
+}
+
+add_action('woocommerce_before_shop_loop', 'add_custom_banner_after_second_row', 5);
+
+// -----------------------------------BANNER AFTER-------------------------------
+
+function add_custom_banner_after_second_row() {
+    // Biến tĩnh để đếm số sản phẩm đã hiển thị
+    static $product_count = 0;
+
+    // Chạy trước mỗi sản phẩm được hiển thị
+    add_action('woocommerce_after_shop_loop_item', function() use (&$product_count) {
+        $product_count++; // Tăng bộ đếm sản phẩm
+        
+        // Chèn banner sau sản phẩm thứ 8 (sau 2 dòng)
+        if ($product_count === 8) { 
+            echo '<li class="shop-banner" style="clear: both; margin: 20px 0; width: 100%;">';
+            echo '<img src="' . get_template_directory_uri() . '/images/slide-1.jpg" alt="Banner quảng cáo" style="width: 100%; height: auto;">';
+            echo '</li>';
+        }
+    });
+}
+
+
+// add_action('woocommerce_after_shop_loop', 'add_custom_banner_after_products');
+// function add_custom_banner_after_products() {
+//     echo '<div class="shop-banner">';
+//     echo '<img src="' . get_template_directory_uri() . '/images/slide-1.jpg" alt="Banner quảng cáo">';
+//     echo '</div>';
+// }
+
+
+// ------------------------------------- BEFORE LOOP ITEM ----------------------------------
+
+add_action( 'woocommerce_before_shop_loop_item_title', 'custom_middle_content', 15 );
+function custom_middle_content() {
+    echo '<hr>';
+}
+
+// --------------------------------- PRODUCT NAME --------------------------------------
+
+// set up css
+
+// --------------------------------- PRODUCT PRICE --------------------------------------
+
+// Xóa các filter mặc định liên quan đến giá
+remove_filter( 'woocommerce_variable_empty_price_html', 'woocommerce_variable_empty_price_html', 10 );
+remove_filter( 'woocommerce_variable_price_html', 'woocommerce_variable_price_html', 10 );
+remove_filter( 'woocommerce_get_price_html', 'woocommerce_get_price_html', 10 );
+
+// Tùy chỉnh hàm hiển thị giá
+add_filter( 'woocommerce_get_price_html', 'custom_price_display', 10, 2 );
+function custom_price_display( $price, $product ) {
+    // Kiểm tra xem sản phẩm là loại biến thể hay không
+    if ( $product->is_type( 'variable' ) ) {
+        // Lấy giá biến thể
+        $prices = $product->get_variation_prices( true );
+
+        // Kiểm tra xem có giá không
+        if ( empty( $prices['price'] ) ) {
+            // Nếu không có giá, hiển thị thông báo mặc định
+            return '<span class="price">Sản phẩm này chưa có giá</span>';
+        } else {
+            // Xử lý giá nằm trong khoảng nếu có
+            $min_price = current( $prices['price'] );
+            $max_price = end( $prices['price'] );
+
+            if ( $min_price !== $max_price ) {
+                $price = wc_format_price_range( $min_price, $max_price );
+            } else {
+                $price = wc_price( $min_price );
+            }
+
+            // Trả về giá đã định dạng
+            return '<span class="sale-price" style="font-weight: bold;">' . $price . '</span>';
+        }
+    } elseif ( $product->is_type( 'simple' ) ) {
+		// Xử lý sản phẩm đơn giản
+		$regular_price = $product->get_regular_price();
+		$sale_price = $product->get_sale_price();
+	
+		if ( empty( $regular_price ) ) {
+			return '<span class="price-prod">Sản phẩm này chưa có giá</span>';
+		} else {
+			// Xây dựng giá hiển thị với giá gốc gạch ngang bên trái và giá khuyến mãi bên phải
+			$price_html = '<span class="regular-price" style="text-decoration: line-through; color: #999;">' . wc_price( $regular_price ) . '</span>';
+			
+			if ( $sale_price ) {
+				// Nếu có giá khuyến mãi, thêm giá khuyến mãi bên phải
+				$price_html .= ' <span class="sale-price" style="font-weight: bold;">' . wc_price( $sale_price ) . '</span>';
+			} else {
+				// Nếu giá khuyến mãi bằng giá gốc
+				$price_html .= ' <span class="sale-price" style="font-weight: bold;">' . wc_price( $regular_price ) . '</span>';
+			}
+			
+			return $price_html;
+		}
+	}
+
+    // Nếu không phải sản phẩm biến thể hay đơn giản, trả về giá mặc định
+    return $price;
+}
+
+
+
+//-----------------------------------STATUS PRODUCT-----------------------------------
+
+// Hook: woocommerce_after_shop_loop_item_title
+add_action( 'woocommerce_after_shop_loop_item_title', 'by_archive_stock', 10 );
+// Hàm hiển thị thông tin số lượng và trạng thái tồn kho của sản phẩm trên trang lưu trữ (archive page)
+function by_archive_stock() {
+    // Lấy thông tin sản phẩm hiện tại từ biến toàn cục $post
+    global $post;
+    
+    // Lấy ID của sản phẩm hiện tại
+    $prod_id = $post->ID;
+    
+    // Tạo đối tượng sản phẩm WooCommerce từ ID sản phẩm
+    $product = wc_get_product( $prod_id );
+    
+    // Lấy trạng thái tồn kho của sản phẩm ('instock' hoặc 'outofstock')
+    $stock_status = $product->get_stock_status();
+    
+    // Lấy số lượng hàng tồn kho của sản phẩm
+    $stock_quantity = $product->get_stock_quantity();
+    
+    // Lấy giá khuyến mãi (nếu có) của sản phẩm
+    $sale_price = $product->get_sale_price();
+    
+    // Lấy loại sản phẩm (simple, grouped, variable, etc.)
+    $product_type = $product->get_type();
+    
+    // Nếu sản phẩm có giá khuyến mãi và số lượng tồn kho lớn hơn hoặc bằng 1
+    if ( $sale_price && $stock_quantity >= 1 ) {
+        // Hiển thị thông báo còn lại bao nhiêu sản phẩm với màu đỏ
+        echo '<div style="color:orange;">Còn ' . $stock_quantity . ' sản phẩm</div>';
+    }
+    // Nếu số lượng tồn kho lớn hơn hoặc bằng 1 nhưng không có giá khuyến mãi
+    elseif ( $stock_quantity >= 1 && !$sale_price ) {
+        // Hiển thị số lượng sản phẩm còn lại với định dạng thông thường
+        echo '<div style="color:green;">(' . $stock_quantity . ' sản phẩm' . ')</div>';
+    } 
+    // Nếu sản phẩm thuộc loại "grouped"
+    elseif( $product_type == 'grouped' ) {
+        // Lấy các sản phẩm con trong nhóm
+        $grouped = $product->get_children();
+        
+        // Khởi tạo mảng để lưu trữ trạng thái tồn kho của từng sản phẩm con
+        $stock = [];
+        
+        // Lặp qua từng sản phẩm con
+        foreach( $grouped as $single ) {
+            // Lấy đối tượng sản phẩm con
+            $product = wc_get_product( $single );
+            
+            // Thêm trạng thái tồn kho của sản phẩm con vào mảng $stock
+            $stock[] = $product->get_stock_status( $single );
+        }
+        
+        // Nếu bất kỳ sản phẩm con nào còn trong kho
+        if ( in_array( 'instock', $stock )) {
+            // Hiển thị "In Stock"
+            echo '<div style="color:green;">Sẵn hàngk</div>';
+        } else {
+            // Nếu không có sản phẩm con nào còn trong kho, hiển thị "Out of Stock"
+            echo '<div style="color:red;">Hết hàng</div>';
+        }
+    }
+    // Nếu sản phẩm không thuộc loại "grouped"
+    else {
+        // Nếu trạng thái tồn kho của sản phẩm là 'instock'
+        if ( $stock_status == 'instock' ) {
+            // Hiển thị "In Stock"
+            echo '<div style="color:green;">Sẵn hàng</div>';
+        }
+        // Nếu trạng thái tồn kho của sản phẩm là 'outofstock'
+        if ( $stock_status == 'outofstock' ) {
+            // Hiển thị "Out of Stock"
+            echo '<div style="color:red;">Hết hàng</div>';
+        }
+    }
+}
+
+//------------------------------------RATING-START------------------------------------
+
+// Xóa action hiển thị sao đánh giá mặc định trên trang sản phẩm
+remove_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_rating', 5 );
+
+// Thêm action tùy chỉnh để hiển thị thông báo nếu chưa có đánh giá
+add_action('woocommerce_after_shop_loop_item', 'custom_woocommerce_no_reviews_text', 5);
+
+function custom_woocommerce_no_reviews_text() {
+    global $product;
+
+    // Kiểm tra nếu sản phẩm có số đánh giá lớn hơn 0
+    if ($product->get_review_count() > 0) {
+        // Nếu có đánh giá, hiển thị rating
+		echo '<p class="woocommerce-product-rating">';
+        woocommerce_template_loop_rating(); 
+        echo '</p>';
+    } else {
+        // Nếu chưa có đánh giá, hiển thị thông báo tùy chỉnh
+        echo '<p class="no-reviews-text">Sản phẩm này chưa có đánh giá</p>';
+    }
+}
+
+
+// --------------------------BUTTON---------------------------------
+
+// Thay đổi văn bản nút "Thêm vào giỏ hàng"
+add_filter('woocommerce_product_add_to_cart_text', 'custom_shop_add_to_cart_text', 10, 2);
+function custom_shop_add_to_cart_text($text, $product) {
+    // Nếu không có sản phẩm, trả về văn bản gốc
+    if (!$product) {
+        return $text;
+    }
+
+    // Kiểm tra nếu biến $product không phải null
+    if ($product instanceof WC_Product) {
+        // Kiểm tra nếu sản phẩm không còn hàng
+        if (!$product->is_in_stock()) {
+            return __('Hết hàng', 'woocommerce');
+        }
+
+        // Kiểm tra nếu sản phẩm không có giá (giá bằng 0 hoặc không có)
+        if (!$product->get_price() || $product->get_price() <= 0) {
+            return __('Xem chi tiết', 'woocommerce');
+        }
+    }
+
+    return __('Thêm giỏ hàng', 'woocommerce');
+}
+
+
+// Thay đổi thông báo
+add_filter( 'gettext', function( $text ) {
+	if ( 'View cart' === $text ) {
+		$text = 'Xem giỏ hàng';
+	}
+	elseif ( 'Sale!' === $text){
+		$text = 'Giảm giá!';
+	}
+	return $text;
+} );
+
+// // Thay đổi thông báo "Hết hàng" khi sản phẩm không còn hàng
+// add_filter('woocommerce_product_add_to_cart_text', 'custom_out_of_stock_text');
+// function custom_out_of_stock_text($text) {
+//     global $product;
+
+//     if (!$product->is_in_stock()) {
+//         return __('Hết hàng', 'woocommerce');
+//     }
+    
+//     return $text;
+// }
+
+// // Thay đổi văn bản nút "Thanh toán"
+// add_filter('woocommerce_order_button_text', 'custom_proceed_to_checkout_text');
+// function custom_proceed_to_checkout_text() {
+//     return __('Thanh toán ngay', 'woocommerce');
+// }
+
+// // Thay đổi văn bản nút "Đặt hàng"
+// add_filter('woocommerce_order_button_text', 'custom_place_order_button_text');
+// function custom_place_order_button_text() {
+//     return __('Đặt hàng ngay', 'woocommerce');
+// }

@@ -11701,4 +11701,53 @@ textarea.form-control-lg {
 .category__col .category__col-background {
   background-color: rgba(127, 24, 127, 0.4588235294);
   border-radius: 25px;
+}
+
+.list-prod .wpfFloatingSwitcher {
+  transition: all 0.3s;
+}
+.list-prod .price-prod, .list-prod .no-reviews-text, .list-prod .woocommerce-result-count {
+  color: #666;
+  font-size: 14px;
+  font-style: italic;
+  margin-top: 10px;
+}
+.list-prod .product a img {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 0 1em;
+  box-shadow: none;
+  border-radius: 10px;
+}
+.list-prod .product .onsale {
+  background: #7F187F;
+}
+.list-prod .woocommerce-loop-product__title {
+  padding: 0.5em 0;
+  margin: 0;
+  font-size: 1em;
+  color: #7F187F;
+}
+.list-prod .star-rating {
+  color: #7F187F;
+}
+.list-prod .star-rating span {
+  color: #7F187F;
+}
+.list-prod ul.products li.product .button {
+  display: inline-block;
+  margin-top: 1em;
+  border-radius: 25px !important;
+}
+.list-prod ul.products li.product .button:hover {
+  background-color: #7F187F;
+  color: #fff;
+  transition: all 0.3s;
+  border-radius: 25px !important;
+}
+.list-prod .added_to_cart {
+  padding-top: 0.5em;
+  display: inline-block;
+  margin-left: 10px !important;
 }/*# sourceMappingURL=style.css.map */
