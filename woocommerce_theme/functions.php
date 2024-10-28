@@ -225,6 +225,9 @@ function woocommerce_taxonomy_archive_description(){
 	
 // }
 
+// -------------------------------------------------------------------SHOP PAGE------------------------------------------------------------------------
+
+
 //--------------------------------RESULT SEARCH--------------------------
 
 // Xóa hành động mặc định
@@ -490,14 +493,37 @@ function custom_shop_add_to_cart_text($text, $product) {
 }
 
 
-// Thay đổi thông báo
+// --------------------------------------------------CHANGE ANNOUNCEMENT-------------------------------------------
 add_filter( 'gettext', function( $text ) {
 	if ( 'View cart' === $text ) {
 		$text = 'Xem giỏ hàng';
 	}
-	elseif ( 'Sale!' === $text){
-		$text = 'Giảm giá!';
-	}
+	elseif ( 'Sale!' === $text ) {
+        // Lấy sản phẩm hiện tại một cách an toàn
+        global $post;
+        $product = wc_get_product( $post->ID );
+
+        if ( $product ) {
+            // Lấy giá gốc và giá khuyến mãi
+            $regular_price = $product->get_regular_price();
+            $sale_price = $product->get_sale_price();
+
+            // Kiểm tra xem sản phẩm có nhiều phiên bản hay không
+            if ( $product->is_type( 'variable' ) ) {
+				$text = 'Giảm giá!';
+            }
+            // Kiểm tra cho sản phẩm không phải là biến thể
+            elseif ( is_numeric( $regular_price ) && $regular_price > 0 && 
+                     is_numeric( $sale_price ) && $sale_price < $regular_price ) {
+                $discount_percentage = 100 - ( ( $sale_price / $regular_price ) * 100 );
+                $discount_percentage = round( $discount_percentage );
+                $text = 'Giảm giá ' . $discount_percentage . '%';
+            } else {
+                // Nếu không có khuyến mãi nào
+                // $text = 'Sản phẩm không có khuyến mãi.';
+            }
+        }
+    }
 	return $text;
 } );
 
@@ -524,3 +550,99 @@ add_filter( 'gettext', function( $text ) {
 // function custom_place_order_button_text() {
 //     return __('Đặt hàng ngay', 'woocommerce');
 // }
+
+// --------------------------------------------------------------SINGLE PRODUCT PAGE------------------------------------------------------------------------
+
+remove_action('woocommerce_single_product_summary', 'woocommerce_template_single_price', 10);
+add_action('woocommerce_single_product_summary', 'woocommerce_template_single_price', 1);
+
+// Đổi nút "Add to cart" thành "Thêm vào giỏ hàng" trên trang sản phẩm đơn
+add_filter('woocommerce_product_single_add_to_cart_text', 'change_add_to_cart_text');
+function change_add_to_cart_text() {
+    return 'Thêm vào giỏ hàng'; // Thay đổi văn bản ở đây
+}
+
+
+// --------------------TAB PRODUCT FILTER------------------------------------------
+
+add_filter('woocommerce_product_tabs', 'short_description_custom_1');
+function short_description_custom_1($tabs){
+	unset($tabs['description']);
+	unset($tabs['additional_information']);
+	unset($tabs['reviews']);
+
+	$tabs['description_product'] = array(
+		'title' => 'Mô tả',
+		'priority' => '5',
+		'callback' => 'woocommerce_description'
+	);
+
+	$tabs['discount'] = array(
+		'title' => 'Sản phẩm khuyến mãi',
+		'priority' => '10',
+		'callback' => 'woocommerce_discount'
+	);
+
+	return $tabs;
+}
+
+function woocommerce_description(){
+	?>
+		<div><?php the_content(); ?></div>
+	<?php
+}
+
+function woocommerce_discount() {
+    global $product;
+
+    // Kiểm tra nếu sản phẩm có nhiều biến thể
+    if ( $product->is_type( 'variable' ) ) {
+		echo '<div>' . get_the_title() . ' đang được khuyến mãi </div>';
+    } else {
+        // Nếu sản phẩm không phải biến thể
+        if ( $product->is_on_sale() ) { 
+            $regular_price = $product->get_regular_price(); 
+            $sale_price = $product->get_sale_price(); 
+
+            // Tính phần trăm giảm giá
+            $discount_percentage = 100 - ( ( $sale_price / $regular_price ) * 100 );
+            $discount_percentage = round( $discount_percentage );
+
+            echo '<div>' . get_the_title() . ' đang được khuyến mãi ' . $discount_percentage . '%</div>';
+        } else {
+            echo '<div>' . get_the_title() . ' không có khuyến mãi</div>';
+        }
+    }
+}
+
+
+function short_description_custom_2($tabs){
+	?>
+		<div class="woocommerce-tabs wc-tabs-wrapper">
+			<?php
+				$tabs = the_content();
+				return $tabs;
+			?>
+		</div>
+	<?php
+}
+
+remove_filter('woocommerce_product_related_products_heading', 'woocommerce_related_products_heading');
+add_filter('woocommerce_product_related_products_heading', function() {
+    return 'Sản phẩm liên quan';
+});
+
+// ----------------------------------- REVIEWS ----------------------------------------
+
+// Xóa tab đánh giá khỏi danh sách tab chính
+add_filter('woocommerce_product_tabs', 'remove_reviews_tab', 98);
+function remove_reviews_tab($tabs) {
+    unset($tabs['reviews']); // Xóa tab 'Đánh giá'
+    return $tabs;
+}
+
+// Hiển thị tab đánh giá ở cuối trang sản phẩm
+add_action('woocommerce_after_single_product_summary', 'move_reviews_to_bottom', 30);
+function move_reviews_to_bottom() {
+    comments_template(); // Hiển thị template đánh giá mặc định của WooCommerce
+}
