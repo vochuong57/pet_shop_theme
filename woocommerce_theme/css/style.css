@@ -11772,7 +11772,7 @@ textarea.form-control-lg {
 .list-prod .tabs.wc-tabs li:not(.active):hover a:hover {
   color: white;
 }
-.list-prod .related h2, .list-prod .related .h2, .list-prod .woocommerce-Reviews-title {
+.list-prod .related h2, .list-prod .related .h2, .list-prod .woocommerce-Reviews-title, .list-prod .title-description-product {
   color: #515151;
 }
 .list-prod .cart .button {
@@ -11787,4 +11787,31 @@ textarea.form-control-lg {
 .list-prod #review_form #respond .form-submit .submit:hover {
   background: #7F187F;
   color: #fff;
+}
+
+.cart .coupon .button {
+  transition: all 0.3s;
+}
+.cart .coupon .button:hover {
+  background: #7F187F;
+  color: #fff;
+}
+.cart .button,
+.cart .btn-update-cart {
+  transition: all 0.3s;
+}
+.cart .button:not(:disabled):hover,
+.cart .btn-update-cart:not(:disabled):hover {
+  background-color: #7F187F;
+  color: #fff;
+}
+.cart .coupon .input-text {
+  float: left;
+  box-sizing: border-box;
+  border: 1px solid #cfc8d8;
+  padding: 6px 6px 5px;
+  margin: 0 4px 0 0;
+  outline: 0;
+  width: -moz-fit-content !important;
+  width: fit-content !important;
 }/*# sourceMappingURL=style.css.map */

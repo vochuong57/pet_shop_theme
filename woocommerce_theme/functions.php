@@ -261,10 +261,9 @@ function custom_woocommerce_result_count() {
     echo '<p class="woocommerce-result-count">' . $result_text . '</p>';
 }
 
-add_action('woocommerce_before_shop_loop', 'add_custom_banner_after_second_row', 5);
-
 // -----------------------------------BANNER AFTER-------------------------------
 
+add_action('woocommerce_before_shop_loop', 'add_custom_banner_after_second_row', 5);
 function add_custom_banner_after_second_row() {
     // Biến tĩnh để đếm số sản phẩm đã hiển thị
     static $product_count = 0;
@@ -361,7 +360,6 @@ function custom_price_display( $price, $product ) {
     // Nếu không phải sản phẩm biến thể hay đơn giản, trả về giá mặc định
     return $price;
 }
-
 
 
 //-----------------------------------STATUS PRODUCT-----------------------------------
@@ -493,7 +491,7 @@ function custom_shop_add_to_cart_text($text, $product) {
 }
 
 
-// --------------------------------------------------CHANGE ANNOUNCEMENT-------------------------------------------
+// -----------------------------------CHANGE ANNOUNCEMENT------------------------------------
 add_filter( 'gettext', function( $text ) {
 	if ( 'View cart' === $text ) {
 		$text = 'Xem giỏ hàng';
@@ -565,7 +563,7 @@ function change_add_to_cart_text() {
 
 // --------------------TAB PRODUCT FILTER------------------------------------------
 
-add_filter('woocommerce_product_tabs', 'short_description_custom_1');
+add_filter('woocommerce_product_tabs', 'short_description_custom_2');
 function short_description_custom_1($tabs){
 	unset($tabs['description']);
 	unset($tabs['additional_information']);
@@ -619,6 +617,7 @@ function woocommerce_discount() {
 function short_description_custom_2($tabs){
 	?>
 		<div class="woocommerce-tabs wc-tabs-wrapper">
+            <h2 class="title-description-product">Mô tả sản phẩm</h2>
 			<?php
 				$tabs = the_content();
 				return $tabs;
@@ -627,10 +626,20 @@ function short_description_custom_2($tabs){
 	<?php
 }
 
+// ----------------------------------------CHANGE TITLE PRODUCT RELATED --------------------------------------
+
 remove_filter('woocommerce_product_related_products_heading', 'woocommerce_related_products_heading');
 add_filter('woocommerce_product_related_products_heading', function() {
     return 'Sản phẩm liên quan';
 });
+
+//------------------------- Thay đổi số lượng sản phẩm liên quan trên trang sản phẩm đơn lẻ-----------------------
+add_filter('woocommerce_output_related_products_args', 'change_related_products_count');
+function change_related_products_count($args) {
+    $args['posts_per_page'] = 3; // Số lượng sản phẩm liên quan
+    $args['columns'] = 3; // Số cột hiển thị sản phẩm
+    return $args;
+}
 
 // ----------------------------------- REVIEWS ----------------------------------------
 
@@ -645,4 +654,50 @@ function remove_reviews_tab($tabs) {
 add_action('woocommerce_after_single_product_summary', 'move_reviews_to_bottom', 30);
 function move_reviews_to_bottom() {
     comments_template(); // Hiển thị template đánh giá mặc định của WooCommerce
+}
+
+// --------------------------------------------------------------CART PAGE------------------------------------------------------------------------
+
+// Xuất thông báo điều kiện free ship
+add_action('woocommerce_before_cart_table', 'show_notice_free_ship');
+function show_notice_free_ship(){
+    $min_amount = 20;
+    $current_amount = WC()->cart->subtotal;
+    if($current_amount<$min_amount){
+        ?>  
+            <div class="woocommerce-message">
+                Bạn cần mua thêm <?php echo wc_price($min_amount - $current_amount) ?> để được Free Ship
+            </div>
+        <?php
+    }
+}
+
+//Xuất thông báo sử dụng mã khuyễn mãi
+add_filter('woocommerce_cart_coupon','show_time_coupon');
+function show_time_coupon(){
+    // class="woocommerce-error"
+    ?>
+        <div class="woocommerce-info mt-2">Bạn hãy nhập mã giảm giá nếu có</div>
+    <?php
+}
+
+
+//Xuất thông báo thời gian giao hàng
+add_action('woocommerce_before_cart', 'show_time_shipping');
+function show_time_shipping(){
+    ?>
+        <div class="woocommerce-info mt-2">Sản phẩm sẽ được giao trong 7 ngày !!!</div>
+    <?php
+}
+
+//Thêm nút return to shopping
+add_action('woocommerce_after_cart_table', 'button_return_to_shopping');
+function button_return_to_shopping(){
+    ?>
+        <div class="wc-proceed-to-checkout" style="width: max-content;">
+            <a href="<?php echo site_url('/shop') ?>" class="checkout-button button alt wc-forward">
+                Tiếp tục mua sắm
+            </a>
+        </div>
+    <?php
 }
