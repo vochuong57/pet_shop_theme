@@ -665,7 +665,7 @@ function show_notice_free_ship(){
     $current_amount = WC()->cart->subtotal;
     if($current_amount<$min_amount){
         ?>  
-            <div class="woocommerce-message">
+            <div class="woocommerce-info">
                 Bạn cần mua thêm <?php echo wc_price($min_amount - $current_amount) ?> để được Free Ship
             </div>
         <?php
@@ -700,4 +700,125 @@ function button_return_to_shopping(){
             </a>
         </div>
     <?php
+}
+
+// --------------------------------------------------------------CHECKOUT PAGE------------------------------------------------------------------------
+
+// -------------------Kiểm tra mảng form checkout để tùy chỉnh
+
+// add_filter( 'woocommerce_checkout_fields', 'misha_print_all_fields' );
+// function misha_print_all_fields( $fields ) {
+//     echo '<pre>';
+//     print_r( $fields );
+//     echo '</pre>';
+//     return $fields;
+// }
+
+// -----------------------Xóa span optional
+
+// add_filter('woocommerce_form_field', 'remove_optional_text', 10, 4);
+// function remove_optional_text($field, $key, $args, $value) {
+//     // Kiểm tra xem khóa 'required' có tồn tại và không bắt buộc
+//     if (isset($args['required']) && !$args['required']) {
+//         $field = preg_replace('/<span class="optional">\(\s*optional\s*\)<\/span>/', '', $field);
+//     }
+//     return $field;
+// }
+
+// ------------------ Tắt function Ship to a different address?
+
+// Tắt hoàn toàn địa chỉ giao hàng
+// add_filter('woocommerce_shipping_enabled', '__return_false');
+
+add_filter('woocommerce_cart_needs_shipping_address', '__return_false');
+
+// --------------------- Tắt các field không cần thiết
+add_filter('woocommerce_checkout_fields', 'remove_fields');
+function remove_fields($data) {
+    unset($data["billing"]["billing_company"]);
+    unset($data["billing"]["billing_country"]);
+    return $data;
+}
+
+// --------------------- Thêm trường billing_hotline
+add_filter('woocommerce_checkout_fields', 'bloomer_add_custom_checkout_field');
+function bloomer_add_custom_checkout_field($data) {
+    $data['billing']['billing_hotline'] = array(
+        'type' => 'text',
+        'class' => array('form-row-wide'),
+        'label' => 'Hotline',
+        'placeholder' => 'Nhập số điện thoại bàn...',
+        'required' => false,
+        // 'default' => '0xxxxxxxxx', 
+    );
+    return $data;
+}
+// Lưu dữ liệu trường billing_hotline vào meta của đơn hàng
+add_action('woocommerce_checkout_update_order_meta', 'save_billing_hotline_field');
+function save_billing_hotline_field($order_id) {
+    if (!empty($_POST['billing_hotline'])) {
+        update_post_meta($order_id, '_billing_hotline', sanitize_text_field($_POST['billing_hotline']));
+    }
+}
+
+// Hiển thị trường billing_hotline trong trang quản trị đơn hàng
+add_action('woocommerce_admin_order_data_after_billing_address', 'display_billing_hotline_in_admin');
+function display_billing_hotline_in_admin($order) {
+    $billing_hotline = get_post_meta($order->get_id(), '_billing_hotline', true);
+    if ($billing_hotline) {
+        echo '<p><strong>Hotline Number:</strong> ' . esc_html($billing_hotline) . '</p>';
+    }
+}
+
+
+// ------------------------------- Xóa phần shipping trong hóa đơn
+
+// add_filter('woocommerce_cart_needs_payment', '__return_false');
+// add_filter('woocommerce_cart_ready_to_calc_shipping', '__return_false');
+
+// ------------------------------- Xóa phần cuối chi tiết giao hàng ở trang cảm ơn
+
+add_filter( 'wc_get_template', 'hide_order_recieved_customer_details', 10 , 1 );
+function hide_order_recieved_customer_details( $template_name ) {
+    // Targeting thankyou page and the customer details
+    if( is_wc_endpoint_url( 'order-received' ) && strpos($template_name, 'order-details-customer.php') !== false ) {
+        return false;
+    }
+    return $template_name;
+}
+
+
+//------------------------------------------------------------------------
+
+// Dịch thuật lại phần heading ở my order trong trang account
+add_filter('woocommerce_my_account_my_orders_columns', 'custom_my_account_my_orders_columns');
+
+function custom_my_account_my_orders_columns() {
+    return array(
+        'order-number'  => esc_html__( 'Đơn hàng', 'woocommerce' ),
+        'order-date'    => esc_html__( 'Trạng thái', 'woocommerce' ),
+        'order-total'   => esc_html__( 'Ngày đặt', 'woocommerce' ),
+        'order-status'  => esc_html__( 'Tổng cộng', 'woocommerce' ),
+        'order-actions' => esc_html__( 'Thao tác', 'woocommerce' ),
+    );
+}
+
+// Dịch trạng thái đơn hàng đang làm
+
+
+// thêm một thẻ p ở trang account
+add_action( 'woocommerce_account_content', 'action_woocommerce_account_content' );
+function action_woocommerce_account_content(  ) {
+    global $current_user; // The WP_User Object
+
+    echo '<p>' . __("Created by Group 10", "woocommerce") . '</p>';
+};
+
+
+// Loại bỏ mục "Tải xuống" khỏi menu tài khoản WooCommerce
+add_filter( 'woocommerce_account_menu_items', 'remove_downloads_my_account', 10, 1 );
+
+function remove_downloads_my_account( $items ) {
+    unset( $items['downloads'] ); // Xóa mục Tải xuống
+    return $items;
 }
