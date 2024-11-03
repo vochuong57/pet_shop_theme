@@ -377,3 +377,14 @@ $theme-colors: map-merge($theme-colors, $custom-color);
   }
 
 }
+
+.site-footer {
+  .menu {
+    padding : 0;
+    margin: 1.3rem;
+    a {
+      text-decoration: none;
+      color: #fff;
+    }
+  }
+}

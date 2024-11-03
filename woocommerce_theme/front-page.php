@@ -40,7 +40,7 @@ get_header();
         <p>lorem ipsum dolor sit amet consectetur adipiscing elit. Sint, id!</p>
     </div>
     <div class="product__row-content">
-        <?php echo do_shortcode('[products limit="4" columns="4"]') ?>
+        <?php echo do_shortcode('[products limit="4" columns="4" best_selling="true" ]') ?>
     </div>
 </section>
 
@@ -104,7 +104,7 @@ get_header();
         <p>lorem ipsum dolor sit amet consectetur adipiscing elit. Sint, id!</p>
     </div>
     <div class="product__row-content">
-        <?php echo do_shortcode('[products limit="4" columns="4"]') ?>
+        <?php echo do_shortcode('[products limit="4" columns="4" orderby="popularity" class="quick-sale" on_sale="true" ]') ?>
     </div>
 </section>
 
