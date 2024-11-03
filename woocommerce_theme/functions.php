@@ -661,7 +661,7 @@ function move_reviews_to_bottom() {
 // Xuất thông báo điều kiện free ship
 add_action('woocommerce_before_cart_table', 'show_notice_free_ship');
 function show_notice_free_ship(){
-    $min_amount = 20;
+    $min_amount = 500000;
     $current_amount = WC()->cart->subtotal;
     if($current_amount<$min_amount){
         ?>  
@@ -788,7 +788,7 @@ function hide_order_recieved_customer_details( $template_name ) {
 }
 
 
-//------------------------------------------------------------------------
+//------------------------------------------------------------------------ ACCOUNT PAGE-------------------------------------------------------------
 
 // Dịch thuật lại phần heading ở my order trong trang account
 add_filter('woocommerce_my_account_my_orders_columns', 'custom_my_account_my_orders_columns');
@@ -821,4 +821,146 @@ add_filter( 'woocommerce_account_menu_items', 'remove_downloads_my_account', 10,
 function remove_downloads_my_account( $items ) {
     unset( $items['downloads'] ); // Xóa mục Tải xuống
     return $items;
+}
+
+// ------------------------------------------------------------ FOOTER-----------------------------------------------------------------
+// Bài 10 : Tạo widget cho footer 
+add_action( 'widgets_init', 'widget_footer_menu_one' );
+
+function widget_footer_menu_one() {
+	$args = array( 
+		"id" => "footer_col_one",
+		"name" => __('Footer Widget One', 'woocommerce_theme'), 
+		"description" => __( 'Hello, this is Footer Widget for col 1', 'woocommerce_theme' ),
+		'before_widget' => '<div id="%1$s" class="widget %2$s">',
+        'after_widget' => '</div>',
+        'before_title' => '<h3 class="widget-title">',
+        'after_title' => '</h3>'
+	);
+    
+	register_sidebar( $args );
+}
+
+
+//Footer Widget col 2 
+add_action( 'widgets_init', 'widget_footer_menu_two' );
+
+function widget_footer_menu_two() {
+	$args = array( 
+		"id" => "footer_col_two",
+		"name" => __('Footer Widget Two', 'woocommerce_theme'), 
+		"description" => __( 'Hello, this is Footer Widget for col 2', 'woocommerce_theme' ),
+		'before_widget' => '<div id="%1$s" class="widget %2$s">',
+        'after_widget' => '</div>',
+        'before_title' => '<h3 class="widget-title">',
+        'after_title' => '</h3>'
+	);
+    
+	register_sidebar( $args );
+}
+
+
+
+//Footer Widget Col 3 
+add_action( 'widgets_init', 'widget_footer_menu_three' );
+
+function widget_footer_menu_three() {
+	$args = array( 
+		"id" => "footer_col_three",
+		"name" => __('Footer Widget Three', 'woocommerce_theme'), 
+		"description" => __( 'Hello, this is Footer Widget for col 3', 'woocommerce_theme' ),
+		'before_widget' => '<div id="%1$s" class="widget %2$s">',
+        'after_widget' => '</div>',
+        'before_title' => '<h3 class="widget-title">',
+        'after_title' => '</h3>'
+	);
+    
+	register_sidebar( $args );
+}
+
+// Tạo shortcode Delivery & Shipping
+function custom_delivery_shipping_content() {
+    ob_start();
+    ?>
+    <!-- <h2>Delivery & Shipping Information</h2> -->
+    <p>Chúng tôi cung cấp các tùy chọn vận chuyển đa dạng để đáp ứng nhu cầu của bạn. Dưới đây là chính sách giao hàng và vận chuyển tiêu chuẩn của chúng tôi:</p>
+    <ul>
+        <li><strong>Vận chuyển tiêu chuẩn:</strong> 3-5 ngày làm việc.</li>
+        <li><strong>Vận chuyển nhanh:</strong> 1-2 ngày làm việc.</li>
+        <li><strong>Vận chuyển quốc tế:</strong> Chưa có dịch vụ này!</li>
+    </ul>
+    <p>Vui lòng tham khảo <a href="/shipping-policy">chính sách vận chuyển</a> của chúng tôi để biết thêm chi tiết.</p>
+    <?php
+    return ob_get_clean();
+}
+add_shortcode('delivery_shipping', 'custom_delivery_shipping_content');
+
+// Tạo shortcode About Us
+function custom_about_us_content() {
+    ob_start();
+    ?>
+    <div class="about-us-content">
+        <!-- <h2>Về Chúng Tôi</h2> -->
+        <p>Chúng tôi là một công ty chuyên cung cấp các sản phẩm và dịch vụ chất lượng cao nhằm đáp ứng nhu cầu của khách hàng. Với đội ngũ chuyên nghiệp và tận tâm, chúng tôi cam kết mang đến sự hài lòng và giá trị bền vững cho mọi khách hàng.</p>
+        <p>Chúng tôi tin tưởng vào sự phát triển lâu dài thông qua uy tín, chất lượng, và dịch vụ hoàn hảo. Hãy cùng chúng tôi xây dựng những giá trị đích thực và tạo nên thành công.</p>
+    </div>
+    <?php
+    return ob_get_clean();
+}
+add_shortcode('about_us', 'custom_about_us_content');
+
+// Tạo shortcode Policies
+function custom_policies_content() {
+    ob_start();
+    ?>
+    <div class="policies-content">
+        <!-- <h2>Chính Sách Của Chúng Tôi</h2> -->
+        <h3>Chính Sách Vận Chuyển</h3>
+        <p>Chúng tôi cung cấp nhiều tùy chọn vận chuyển nhằm đáp ứng nhu cầu của khách hàng:</p>
+        <ul>
+            <li><strong>Giao hàng tiêu chuẩn:</strong> 3-5 ngày làm việc.</li>
+            <li><strong>Giao hàng nhanh:</strong> 1-2 ngày làm việc.</li>
+            <li><strong>Giao hàng quốc tế:</strong> Chưa có dịch vụ này!</li>
+        </ul>
+
+        <h3>Chính Sách Đổi Trả</h3>
+        <p>Chúng tôi cam kết mang đến sự hài lòng tối đa cho khách hàng. Nếu bạn không hài lòng với sản phẩm đã mua, vui lòng xem xét các chính sách đổi trả của chúng tôi:</p>
+        <ul>
+            <li><strong>Thời gian đổi trả:</strong> Trong vòng 30 ngày kể từ ngày nhận hàng.</li>
+            <li><strong>Điều kiện sản phẩm:</strong> Sản phẩm phải còn nguyên vẹn, chưa qua sử dụng và còn nguyên bao bì.</li>
+            <li><strong>Chi phí vận chuyển:</strong> Khách hàng chịu chi phí vận chuyển khi đổi trả.</li>
+        </ul>
+
+        <p>Để biết thêm chi tiết, vui lòng xem trang <a href="/shipping-policy">chính sách vận chuyển</a> và <a href="/return-policy">chính sách đổi trả</a> của chúng tôi.</p>
+    </div>
+    <?php
+    return ob_get_clean();
+}
+add_shortcode('policies', 'custom_policies_content');
+
+// Tạo shortcode Free Shipping
+function custom_free_shipping_content() {
+    ob_start();
+    ?>
+    <div class="free-shipping-content">
+        <h2>Chính Sách Giao Hàng Miễn Phí</h2>
+        <p>Chúng tôi cung cấp dịch vụ giao hàng miễn phí cho tất cả các đơn hàng đủ điều kiện:</p>
+        <ul>
+            <li><strong>Đơn hàng nội địa:</strong> Miễn phí vận chuyển cho các đơn hàng từ 500,000₫ trở lên.</li>
+            <li><strong>Đơn hàng quốc tế:</strong> Chưa có dịch vụ này!</li>
+        </ul>
+        <p>Hãy tận hưởng chính sách giao hàng miễn phí khi mua sắm tại cửa hàng của chúng tôi!</p>
+        <p>Để biết thêm chi tiết, vui lòng xem <a href="/shipping-policy">chính sách giao hàng</a> của chúng tôi.</p>
+    </div>
+    <?php
+    return ob_get_clean();
+}
+add_shortcode('free_shipping', 'custom_free_shipping_content');
+
+add_action('template_redirect', 'allow_guest_access_to_shop');
+function allow_guest_access_to_shop() {
+    if (!is_user_logged_in() && is_shop()) {
+        // Kiểm tra xem nếu người dùng chưa đăng nhập và đang truy cập trang shop
+        remove_action('template_redirect', 'woocommerce_template_redirect'); // Bỏ qua ràng buộc của WooCommerce
+    }
 }

@@ -11902,4 +11902,13 @@ textarea.form-control-lg {
     width: 50%;
     box-sizing: border-box;
   }
+}
+
+.site-footer .menu {
+  padding: 0;
+  margin: 1.3rem;
+}
+.site-footer .menu a {
+  text-decoration: none;
+  color: #fff;
 }/*# sourceMappingURL=style.css.map */
