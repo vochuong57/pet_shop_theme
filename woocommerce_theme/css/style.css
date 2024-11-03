@@ -11814,4 +11814,92 @@ textarea.form-control-lg {
   outline: 0;
   width: -moz-fit-content !important;
   width: fit-content !important;
+}
+
+.checkout .woocommerce-additional-fields {
+  padding-top: 40px;
+}
+
+.account {
+  /* Đặt toàn bộ container */
+  /* Định dạng menu điều hướng */
+  /* Phần nội dung */
+  /* Kiểu cho phần chào mừng */
+  /* Kiểu nút thoát */
+  /* Responsive - Bố trí hàng cho điều hướng trên màn hình nhỏ */
+}
+.account .woocommerce {
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.account .woocommerce-MyAccount-navigation {
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+.account .woocommerce-MyAccount-navigation ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.account .woocommerce-MyAccount-navigation-link {
+  display: block;
+  padding: 15px;
+  color: #333;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+.account .woocommerce-MyAccount-navigation-link:hover,
+.account .woocommerce-MyAccount-navigation-link.is-active a {
+  background-color: #7F187F;
+  color: #fff;
+}
+.account .woocommerce-MyAccount-navigation-link a {
+  color: inherit;
+  text-decoration: none;
+}
+.account .is-active {
+  background-color: #7F187F;
+  color: #fff;
+}
+.account .woocommerce-MyAccount-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+.account .woocommerce-MyAccount-content p {
+  color: #333;
+  line-height: 1.6;
+  margin: 15px 0;
+}
+.account .woocommerce-MyAccount-content a {
+  color: #7F187F;
+  text-decoration: none;
+  font-weight: bold;
+}
+.account .woocommerce-MyAccount-content a:hover {
+  color: #005f8a;
+}
+.account .woocommerce-MyAccount-navigation-link--customer-logout a {
+  color: #d9534f;
+}
+.account .woocommerce-MyAccount-navigation-link--customer-logout a:hover {
+  color: #c9302c;
+}
+@media (max-width: 768px) {
+  .account .woocommerce-MyAccount-navigation ul {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .account .woocommerce-MyAccount-navigation-link {
+    width: 50%;
+    box-sizing: border-box;
+  }
 }/*# sourceMappingURL=style.css.map */
