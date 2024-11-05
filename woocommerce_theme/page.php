@@ -15,7 +15,7 @@
 get_header();
 ?>
 
-	<main id="primary" class="site-main container cart checkout account">
+	<main id="primary" class="site-main container cart checkout account thankyou">
 		<!-- <div class="container"> -->
 			<?php
 			while ( have_posts() ) :
