@@ -11911,4 +11911,97 @@ textarea.form-control-lg {
 .site-footer .menu a {
   text-decoration: none;
   color: #fff;
+}
+
+.thankyou .vdh_qr_code {
+  display: flex;
+  justify-content: center;
+}
+.thankyou .vdh_qr_code .vdh_bank_item {
+  width: 400px;
+  display: inline-block;
+}
+.thankyou .vdh_qr_code .vdh_bank_item img {
+  width: 100%;
+}
+.thankyou .vdh_qr_code .img_qr_code {
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.thankyou .vdh_qr_code .img_qr_code:hover {
+  opacity: 0.7;
+}
+.thankyou .vdh_qr_code .modal {
+  display: none;
+  position: fixed;
+  z-index: 999999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+}
+.thankyou .vdh_qr_code .modal-content {
+  margin: auto;
+  display: block;
+  height: 100%;
+}
+.thankyou .vdh_qr_code #caption {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 700px;
+  text-align: center;
+  color: #ccc;
+  padding: 10px 0;
+  height: 150px;
+}
+.thankyou .vdh_qr_code #caption, .thankyou .vdh_qr_code .modal-content {
+  -webkit-animation-name: zoom;
+  -webkit-animation-duration: 0.6s;
+  animation-name: zoom;
+  animation-duration: 0.6s;
+}
+.thankyou .vdh_qr_code .out {
+  animation-name: zoom-out;
+  animation-duration: 0.6s;
+}
+@keyframes zoom {
+  from {
+    transform: scale(0.4);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+@keyframes zoom-out {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(0);
+  }
+}
+.thankyou .vdh_qr_code .close {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: 700;
+  transition: 0.3s;
+}
+.thankyou .vdh_qr_code .close:focus, .thankyou .vdh_qr_code .close:hover {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+@media only screen and (max-width: 768px) {
+  .thankyou .vdh_qr_code .modal-content {
+    height: auto;
+  }
 }/*# sourceMappingURL=style.css.map */

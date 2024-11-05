@@ -1080,6 +1080,55 @@ function custom_login_register_message_on_checkout() {
     }
 }
 
+//---------------------------------------------------------- ORDER RECEIVED PAGE -----------------------------------------------------------
 
+add_action('woocommerce_thankyou_bacs', function($order_id){
+    $bacs_info = get_option('woocommerce_bacs_accounts');
+    if(!empty($bacs_info) && count($bacs_info) > 0):
+        $order = wc_get_order( $order_id );
+        $content = 'Don hang ' . $order->get_order_number(); // Nội dung chuyển khoản
+    ?>
+        <div class="vdh_qr_code">
+	    <?php foreach($bacs_info as $item): ?>
+	    <span class="vdh_bank_item">
+	        <img class="img_qr_code" src="https://img.vietqr.io/image/<?php echo $item['bank_name']?>-<?php echo $item['account_number']?>-print.jpg?amount=<?php echo $order->get_total() ?>&addInfo=<?php echo $content ?>&accountName=<?php echo $item['account_name']?>" alt="QR Code">
+	    </span>
+	    <?php endforeach; ?>
 
+            <div id="modal_qr_code" class="modal">
+	        <img class="modal-content" id="img01">
+	    </div>
+        </div>
+
+	
+
+	<script>
+        $(document).ready(function() {
+            $('.vdh_bank_item').on('click', function(e) {
+                e.preventDefault(); // Ngăn chặn hành động mặc định
+                e.stopPropagation();
+            });
+        });
+
+	    const modal = document.getElementById('modal_qr_code');
+	    const modalImg = document.getElementById("img01");
+	    var img = document.querySelectorAll('.img_qr_code');
+	    for (var i=0; i<img.length; i++){
+	        img[i].onclick = function(){
+		    modal.style.display = "block";
+		    modalImg.src = this.src;
+		    modalImg.alt = this.alt;
+		}
+	    }
+	    modal.onclick = function() {
+	        img01.className += " out";
+		setTimeout(function() {
+		    modal.style.display = "none";
+		    img01.className = "modal-content";
+		}, 400);
+	    }
+	</script>
+    <?php
+    endif;
+});
 
