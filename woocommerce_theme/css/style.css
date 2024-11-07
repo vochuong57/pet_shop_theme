@@ -12004,4 +12004,75 @@ textarea.form-control-lg {
   .thankyou .vdh_qr_code .modal-content {
     height: auto;
   }
+}
+
+.post .post-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.post .post-item {
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s;
+}
+.post .post-item:hover {
+  transform: translateY(-5px);
+}
+.post .post-thumbnail img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.post .post-item h3, .post .post-item .h3 {
+  margin: 15px;
+  font-size: 1.25em;
+  color: #333;
+}
+.post .post-item h3 a, .post .post-item .h3 a {
+  color: inherit;
+  text-decoration: none;
+}
+.post .post-item h3 a:hover, .post .post-item .h3 a:hover {
+  text-decoration: underline;
+}
+.post .post-excerpt {
+  padding: 15px;
+  font-size: 1em;
+  color: #555;
+  background-color: transparent;
+}
+.post .post-meta {
+  display: flex;
+  gap: 10px;
+  font-size: 0.9rem;
+  padding-left: 17px;
+}
+.post .post-meta i {
+  margin-right: 5px;
+  color: #666;
+}
+.post .post-item {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+}
+.post .post-item:hover {
+  transform: translateY(-5px);
+}
+.post .read-more-btn {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-color: #f0f0f0;
+  color: #000;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+}
+.post .read-more-btn:hover {
+  background-color: #7F187F;
+  color: #fff;
 }/*# sourceMappingURL=style.css.map */

@@ -496,7 +496,7 @@ add_filter( 'gettext', function( $text ) {
 	if ( 'View cart' === $text ) {
 		$text = 'Xem giỏ hàng';
 	}
-	elseif ( 'Sale!' === $text ) {
+	elseif ( 'Giảm giá!' === $text ) {
         // Lấy sản phẩm hiện tại một cách an toàn
         global $post;
         $product = wc_get_product( $post->ID );
