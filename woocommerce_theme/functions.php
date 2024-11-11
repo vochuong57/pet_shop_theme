@@ -1402,3 +1402,66 @@ function product_row_heading_customize($wp_customize) {
         'type' => 'textarea'
     ));
 }
+
+// ---------------------------------------------------VIEW COUNT ------------------------------------------------------------
+// Hàm tăng lượt xem bài viết
+function set_post_views($postID) {
+    $count_key = 'post_views_count';
+    $count = get_post_meta($postID, $count_key, true);
+    if($count == ''){
+        $count = 0;
+        delete_post_meta($postID, $count_key);
+        add_post_meta($postID, $count_key, '1');
+    } else {
+        $count++;
+        update_post_meta($postID, $count_key, $count);
+    }
+}
+
+// Hàm lấy lượt xem bài viết
+function get_post_views($postID){
+    $count_key = 'post_views_count';
+    $count = get_post_meta($postID, $count_key, true);
+    if($count == ''){
+        delete_post_meta($postID, $count_key);
+        return "0 views";
+    }
+    return $count . ' views';
+}
+
+//----------------------------------------------------
+
+// Hàm tăng lượt xem cho sản phẩm
+function set_product_views($product_id) {
+    $count_key = 'product_views_count';
+    $count = get_post_meta($product_id, $count_key, true);
+    if($count == ''){
+        $count = 0;
+        delete_post_meta($product_id, $count_key);
+        add_post_meta($product_id, $count_key, '1');
+    } else {
+        $count++;
+        update_post_meta($product_id, $count_key, $count);
+    }
+}
+
+// Hàm lấy số lượt xem của sản phẩm
+function get_product_views($product_id){
+    $count_key = 'product_views_count';
+    $count = get_post_meta($product_id, $count_key, true);
+    if($count == ''){
+        delete_post_meta($product_id, $count_key);
+        return "0 views";
+    }
+    return $count . ' views';
+}
+add_action( 'woocommerce_after_shop_loop_item_title', 'display_views_product', 15 );
+function display_views_product(){
+    ?> 
+        <div class="product-views">
+            <span><?php echo get_product_views(get_the_ID()); ?></span>
+        </div>
+
+    <?php
+}
+
