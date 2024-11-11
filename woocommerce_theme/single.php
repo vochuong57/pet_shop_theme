@@ -13,6 +13,11 @@ get_header();
 	<main id="primary" class="site-main container">
 
 		<?php
+		// Đếm lượt view bài viết
+		if (is_single()) {
+			set_post_views(get_the_ID());
+		}
+		
 		while ( have_posts() ) :
 			the_post();
 
