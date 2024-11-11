@@ -598,3 +598,23 @@ $theme-colors: map-merge($theme-colors, $custom-color);
   }
 
 }
+
+.home{
+  .product__row-content{
+    .onsale{
+      background: $primary;
+    }
+    .button{
+      display: inline-block;
+      margin-top: 1em;
+      border-radius: 25px !important;
+  
+      &:hover{
+        background-color: $primary;
+        color: $white;
+        transition: all .3s;
+        border-radius: 25px !important;
+      }
+    }
+  }
+}

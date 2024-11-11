@@ -32,11 +32,15 @@
 					<ul class="topbar__list-left d-flex justify-content-start gap-3 flex-md-column flex-lg-row">
 						<li class="d-flex align-items-center">
 							<i class="bi bi-telephone rounded-circle"></i>
-							<a class="text-decoration-none" href="tel:0123456789">+84 123 456 789</a>
+							<a class="text-decoration-none" href="tel:<?php echo esc_attr( get_theme_mod('set-topbar-phone', '+84 123 456 789') ); ?>">
+								<?php echo esc_html( get_theme_mod('set-topbar-phone', '+84 123 456 789') ); ?>
+							</a>
 						</li>
 						<li class="d-flex align-items-center">
 							<i class="bi bi-envelope rounded-circle"></i>
-							<a class="text-decoration-none" href="mailto:vochuong57@gmail.com">vochuong57@gmail.com</a>
+							<a class="text-decoration-none" href="mailto:<?php echo esc_attr( get_theme_mod('set-topbar-email', 'vochuong57@gmail.com') ); ?>">
+								<?php echo esc_html( get_theme_mod('set-topbar-email', 'vochuong57@gmail.com') ); ?>
+							</a>
 						</li>
 					</ul>
 				</div>
@@ -44,21 +48,22 @@
 					<ul class="topbar__list-left d-flex justify-content-end gap-lg-5 flex-md-column flex-lg-row gap-md-3">
 						<li class="d-flex align-items-center">
 							<i class="bi bi-truck rounded-circle"></i>
-							Free VN Shipping
+							<?php echo esc_html( get_theme_mod('set-topbar-shipping', 'Free VN Shipping') ); ?>
 						</li>
 						<li class="d-flex align-items-center">
 							<i class="bi bi-clock-history rounded-circle"></i>
-							30 Day Menu Back
+							<?php echo esc_html( get_theme_mod('set-topbar-return', '30 Day Menu Back') ); ?>
 						</li>
 						<li class="d-flex align-items-center">
 							<i class="bi bi-person rounded-circle"></i>
-							24/7 Customer Support
+							<?php echo esc_html( get_theme_mod('set-topbar-support', '24/7 Customer Support') ); ?>
 						</li>
 					</ul>
 				</div>
 			</div>
 		</div>
 	</div>
+
 	<header id="masthead" class="site-header">
 		<div class="container pt-2 pb-2">
 			<div class="row align-items-center">

@@ -54,7 +54,7 @@ get_header();
                     <?php if ( has_post_thumbnail() ) : ?>
                     <div class="post-thumbnail">
                         <a href="<?php the_permalink(); ?>">
-                            <?php the_post_thumbnail('medium', ['class' => 'card-img-top']); ?>
+                            <?php the_post_thumbnail('high', ['class' => 'card-img-top']); ?>
                         </a>
                     </div>
                     <?php endif; ?>
@@ -69,7 +69,12 @@ get_header();
                         <div class="post-excerpt card-text">
                             <?php 
                                         // Hiển thị giới hạn 100 ký tự đầu tiên của nội dung
-                                        echo wp_trim_words(get_the_content(), 20, '...');
+                                        // echo wp_trim_words(get_the_content(), 20, '...');
+                                         // Hiển thị giới hạn 100 ký tự đầu tiên của nội dung, không làm bể giao diện
+                                        $content = get_the_content();
+                                        
+                                        // Cắt văn bản để chỉ hiển thị 100 ký tự đầu tiên
+                                        echo wp_html_excerpt($content, 100) . '...';
                                     ?>
                         </div>
                         <a href="<?php the_permalink(); ?>" class="read-more-btn">Đọc thêm</a>
