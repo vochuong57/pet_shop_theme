@@ -12075,4 +12075,19 @@ textarea.form-control-lg {
 .post .read-more-btn:hover {
   background-color: #7F187F;
   color: #fff;
+}
+
+.home .product__row-content .onsale {
+  background: #7F187F;
+}
+.home .product__row-content .button {
+  display: inline-block;
+  margin-top: 1em;
+  border-radius: 25px !important;
+}
+.home .product__row-content .button:hover {
+  background-color: #7F187F;
+  color: #fff;
+  transition: all 0.3s;
+  border-radius: 25px !important;
 }/*# sourceMappingURL=style.css.map */

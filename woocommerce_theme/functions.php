@@ -1132,3 +1132,273 @@ add_action('woocommerce_thankyou_bacs', function($order_id){
     endif;
 });
 
+// ------------------------------------------------------------- THEME OPTION --------------------------------------------------------------
+
+// ----------------- SECTION TOPBAR & COPYRIGHT
+add_action( 'customize_register', 'theme_option_customize' );
+
+function theme_option_customize($wp_customize) {
+    // --------------------------- SECTION TOPBAR ------------------------------
+    // Add section
+	$wp_customize->add_section("sec-topbar", array(
+		"title" => "Topbar Settings",
+		"description" => "Settings for the topbar"
+	));
+
+	// Phone Number Setting
+	$wp_customize->add_setting("set-topbar-phone", array(
+		"type" => "theme_mod",
+		"default" => "+84 123 456 789",
+		"sanitize_callback" => "sanitize_text_field"
+	));
+
+	$wp_customize->add_control("set-topbar-phone", array(
+		"label" => "Phone Number",
+		"section" => "sec-topbar",
+		"type" => "text"
+	));
+
+	// Email Setting
+	$wp_customize->add_setting("set-topbar-email", array(
+		"type" => "theme_mod",
+		"default" => "vochuong57@gmail.com",
+		"sanitize_callback" => "sanitize_email"
+	));
+
+	$wp_customize->add_control("set-topbar-email", array(
+		"label" => "Email Address",
+		"section" => "sec-topbar",
+		"type" => "email"
+	));
+
+	// Free Shipping Text Setting
+	$wp_customize->add_setting("set-topbar-shipping", array(
+		"type" => "theme_mod",
+		"default" => "Free VN Shipping",
+		"sanitize_callback" => "sanitize_text_field"
+	));
+
+	$wp_customize->add_control("set-topbar-shipping", array(
+		"label" => "Free Shipping Text",
+		"section" => "sec-topbar",
+		"type" => "text"
+	));
+
+	// Return Policy Text Setting
+	$wp_customize->add_setting("set-topbar-return", array(
+		"type" => "theme_mod",
+		"default" => "30 Day Menu Back",
+		"sanitize_callback" => "sanitize_text_field"
+	));
+
+	$wp_customize->add_control("set-topbar-return", array(
+		"label" => "Return Policy Text",
+		"section" => "sec-topbar",
+		"type" => "text"
+	));
+
+	// Customer Support Text Setting
+	$wp_customize->add_setting("set-topbar-support", array(
+		"type" => "theme_mod",
+		"default" => "24/7 Customer Support",
+		"sanitize_callback" => "sanitize_text_field"
+	));
+
+	$wp_customize->add_control("set-topbar-support", array(
+		"label" => "Customer Support Text",
+		"section" => "sec-topbar",
+		"type" => "text"
+	));
+
+
+    // --------------------------- SECTION COPYRIGHT ------------------------------
+	//Add Section 
+	$wp_customize->add_section("sec-copyright", array(
+		"title" => "Copyright Settings",
+		"description" => "This is a Description for copy right"
+	));
+
+	//Add setting
+	$wp_customize->add_setting("set-copyright", array(
+		"type" => "theme_mod",
+		"default" => "© Woocommerce Pet Shop 2024 created by Group 10 Dev",
+		"sanitize_callback" => "sanitize_text_field"
+	));
+
+	//Add Control 
+    $wp_customize->add_control("set-copyright", array(
+		"label" => "Copyright",
+		"description" =>"Please fill description for copyright",
+		"section" => "sec-copyright",
+		"type" => "text"
+	));
+
+}
+
+// ----------------- SECTION DISPLAY PRODUCTS
+add_action('customize_register', 'product_section_customize');
+
+function product_section_customize($wp_customize) {
+    // Add Section
+    $wp_customize->add_section('sec-product-display', array(
+        'title' => 'Product Display Settings',
+        'description' => 'Customize the display of products in different sections'
+    ));
+
+    // Setting for Product Limit (Best Selling)
+    $wp_customize->add_setting('set-product-limit-best-selling', array(
+        'type' => 'theme_mod',
+        'default' => 4,
+        'sanitize_callback' => 'absint'
+    ));
+    $wp_customize->add_control('set-product-limit-best-selling', array(
+        'label' => 'Best Selling Products Limit',
+        'description' => 'Number of best-selling products to display',
+        'section' => 'sec-product-display',
+        'type' => 'number',
+    ));
+
+    // Setting for Columns (Best Selling)
+    $wp_customize->add_setting('set-product-columns-best-selling', array(
+        'type' => 'theme_mod',
+        'default' => 4,
+        'sanitize_callback' => 'absint'
+    ));
+    $wp_customize->add_control('set-product-columns-best-selling', array(
+        'label' => 'Best Selling Products Columns',
+        'description' => 'Number of columns for best-selling products',
+        'section' => 'sec-product-display',
+        'type' => 'number',
+    ));
+
+    // Setting for Sorting Order (Best Selling)
+    $wp_customize->add_setting('set-product-orderby-best-selling', array(
+        'type' => 'theme_mod',
+        'default' => 'best_selling',
+        'sanitize_callback' => 'sanitize_text_field'
+    ));
+    $wp_customize->add_control('set-product-orderby-best-selling', array(
+        'label' => 'Best Selling Products Order',
+        'section' => 'sec-product-display',
+        'type' => 'select',
+        'choices' => array(
+            'best_selling' => 'Best Selling',
+            'popularity' => 'Popularity',
+            'rating' => 'Rating',
+            'date' => 'Newest',
+        ),
+    ));
+
+    // Setting for Product Limit (On Sale)
+    $wp_customize->add_setting('set-product-limit-on-sale', array(
+        'type' => 'theme_mod',
+        'default' => 4,
+        'sanitize_callback' => 'absint'
+    ));
+    $wp_customize->add_control('set-product-limit-on-sale', array(
+        'label' => 'On Sale Products Limit',
+        'description' => 'Number of on-sale products to display',
+        'section' => 'sec-product-display',
+        'type' => 'number',
+    ));
+
+    // Setting for Columns (On Sale)
+    $wp_customize->add_setting('set-product-columns-on-sale', array(
+        'type' => 'theme_mod',
+        'default' => 4,
+        'sanitize_callback' => 'absint'
+    ));
+    $wp_customize->add_control('set-product-columns-on-sale', array(
+        'label' => 'On Sale Products Columns',
+        'description' => 'Number of columns for on-sale products',
+        'section' => 'sec-product-display',
+        'type' => 'number',
+    ));
+
+    // Setting for Sorting Order (On Sale)
+    $wp_customize->add_setting('set-product-orderby-on-sale', array(
+        'type' => 'theme_mod',
+        'default' => 'popularity',
+        'sanitize_callback' => 'sanitize_text_field'
+    ));
+    $wp_customize->add_control('set-product-orderby-on-sale', array(
+        'label' => 'On Sale Products Order',
+        'section' => 'sec-product-display',
+        'type' => 'select',
+        'choices' => array(
+            'popularity' => 'Popularity',
+            'rating' => 'Rating',
+            'date' => 'Newest',
+            'price' => 'Price',
+        ),
+    ));
+}
+
+// ----------------- SECTION PRODUCT ROW HEADING
+add_action('customize_register', 'product_row_heading_customize');
+
+function product_row_heading_customize($wp_customize) {
+    // Add Section for Product Row Heading 1
+    $wp_customize->add_section('sec-product-row-heading-1', array(
+        'title' => 'Product Row Heading 1',
+        'description' => 'Customize the Product Row Heading 1 section'
+    ));
+
+    // Setting for Product Row Heading 1 Title
+    $wp_customize->add_setting('set-product-row-heading-1-title', array(
+        'type' => 'theme_mod',
+        'default' => 'Popular Products',
+        'sanitize_callback' => 'sanitize_text_field'
+    ));
+    $wp_customize->add_control('set-product-row-heading-1-title', array(
+        'label' => 'Product Row Heading 1 Title',
+        'description' => 'Enter the title for Product Row Heading 1',
+        'section' => 'sec-product-row-heading-1',
+        'type' => 'text'
+    ));
+
+    // Setting for Product Row Heading 1 Description
+    $wp_customize->add_setting('set-product-row-heading-1-description', array(
+        'type' => 'theme_mod',
+        'default' => 'lorem ipsum dolor sit amet consectetur adipiscing elit. Sint, id!',
+        'sanitize_callback' => 'sanitize_textarea_field'
+    ));
+    $wp_customize->add_control('set-product-row-heading-1-description', array(
+        'label' => 'Product Row Heading 1 Description',
+        'description' => 'Enter the description for Product Row Heading 1',
+        'section' => 'sec-product-row-heading-1',
+        'type' => 'textarea'
+    ));
+
+    // Add Section for Product Row Heading 2
+    $wp_customize->add_section('sec-product-row-heading-2', array(
+        'title' => 'Product Row Heading 2',
+        'description' => 'Customize the Product Row Heading 2 section'
+    ));
+
+    // Setting for Product Row Heading 2 Title
+    $wp_customize->add_setting('set-product-row-heading-2-title', array(
+        'type' => 'theme_mod',
+        'default' => 'Specials Offers',
+        'sanitize_callback' => 'sanitize_text_field'
+    ));
+    $wp_customize->add_control('set-product-row-heading-2-title', array(
+        'label' => 'Product Row Heading 2 Title',
+        'description' => 'Enter the title for Product Row Heading 2',
+        'section' => 'sec-product-row-heading-2',
+        'type' => 'text'
+    ));
+
+    // Setting for Product Row Heading 2 Description
+    $wp_customize->add_setting('set-product-row-heading-2-description', array(
+        'type' => 'theme_mod',
+        'default' => 'lorem ipsum dolor sit amet consectetur adipiscing elit. Sint, id!',
+        'sanitize_callback' => 'sanitize_textarea_field'
+    ));
+    $wp_customize->add_control('set-product-row-heading-2-description', array(
+        'label' => 'Product Row Heading 2 Description',
+        'description' => 'Enter the description for Product Row Heading 2',
+        'section' => 'sec-product-row-heading-2',
+        'type' => 'textarea'
+    ));
+}
