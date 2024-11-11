@@ -79,6 +79,7 @@
 				<div class="col-md-3 col-12 d-flex justify-content-center justify-content-md-end gap-2">
 					<a class="text-decoration-none" href="<?php echo wc_get_cart_url(); ?>"><i class="bi bi-bag-dash"></i></a>
 					<a class="cart-customlocation text-decoration-none text-black-50" href="<?php echo wc_get_cart_url(); ?>" title="<?php _e( 'View your shopping cart' ); ?>"><?php echo sprintf ( _n( '%d item', '%d items', WC()->cart->get_cart_contents_count() ), WC()->cart->get_cart_contents_count() ); ?> – <?php echo WC()->cart->get_cart_total(); ?></a>
+					<a href="<?php echo home_url('/wishlist'); ?>" class="ms-2 text-decoration-none text-black-50"><i class="bi bi-heart-fill me-1"></i>Wishlist</a>
 				</div>
 			</div>
 		</div>

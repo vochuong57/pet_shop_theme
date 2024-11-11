@@ -74,6 +74,13 @@ $theme-colors: map-merge($theme-colors, $custom-color);
       padding: 7px 0px;
     }
   }
+  a i.bi-heart-fill{
+    color: $primary; /* Đổi màu trái tim thành màu đỏ */
+    // font-size: 24px; /* Kích thước biểu tượng */
+    // background-color: pink; /* Thêm nền màu hồng */
+    // padding: 5px;
+    // border-radius: 50%; /* Làm tròn nền */
+  }
 }
 .main-navigation{
   font-weight: 400;
@@ -193,6 +200,15 @@ $theme-colors: map-merge($theme-colors, $custom-color);
     display: inline-block;
     margin-left: 10px !important;
   }
+
+  // .yith-add-to-wishlist-button-block {
+  //   display: flex;
+  //   align-items: center;
+  //   justify-content: center;
+  //   position: relative;
+  //   width: max-content;
+  //   margin:7px auto;
+  // }
 
   // --------------------------SINGLE PRODUCT PAGE-------------------------------
 
@@ -616,5 +632,15 @@ $theme-colors: map-merge($theme-colors, $custom-color);
         border-radius: 25px !important;
       }
     }
+  }
+}
+.wishlist{
+  .entry-content{
+    margin: 30px 0px;
+  }
+  .yith-wcwl-share{
+    float: left;
+    clear: both;
+    margin-top: 30px;
   }
 }
