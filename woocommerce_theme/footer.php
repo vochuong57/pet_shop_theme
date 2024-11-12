@@ -42,6 +42,13 @@
 </div><!-- #page -->
 
 <?php wp_footer(); ?>
+<!-- B2: tạo html cho quick view -->
+<div class="quick-view-modal" style="display:none;">
+    <div class="quick-view-content">
+        <span class="close-quick-view">×</span>
+        <div class="quick-view-product"></div>
+    </div>
+</div>
 
 </body>
 </html>
