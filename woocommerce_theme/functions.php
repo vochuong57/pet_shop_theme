@@ -309,7 +309,7 @@ remove_filter( 'woocommerce_variable_price_html', 'woocommerce_variable_price_ht
 remove_filter( 'woocommerce_get_price_html', 'woocommerce_get_price_html', 10 );
 
 // Tùy chỉnh hàm hiển thị giá
-add_filter( 'woocommerce_get_price_html', 'custom_price_display', 10, 2 );
+add_filter( 'woocommerce_get_price_html', 'custom_price_display', 15, 2 );
 function custom_price_display( $price, $product ) {
     // Kiểm tra xem sản phẩm là loại biến thể hay không
     if ( $product->is_type( 'variable' ) ) {
@@ -1465,3 +1465,68 @@ function display_views_product(){
     <?php
 }
 
+// ---------------------------------------- QUICICK VIEW ---------------------------------------------
+// B1: Thêm nút quick view
+function wcsuccess_add_quick_view_button() {
+    echo '<a href="#" class="button quick-view" data-product_id="' . get_the_ID() . '">Quick View</a>';
+}
+add_action('woocommerce_after_shop_loop_item', 'wcsuccess_add_quick_view_button', 20); 
+
+// B2: vào filter footer tạo mã html cho quick vỉew
+
+// B3: Tạo AJAX xử lý lấy thông tin sản phẩm từ product_id đổ từ attr đổ ra #quick-view-product
+add_action('wp_footer', 'wcsuccess_quickview_js');
+function wcsuccess_quickview_js(){
+    ?>
+        <script type="text/javascript">
+        jQuery(document).ready(function($) {
+            // Mở modal khi click vào .quick-view
+            $('.quick-view').on('click', function(e) {
+                e.preventDefault();
+                var product_id = $(this).data('product_id');
+                
+                $.ajax({
+                    url: 'https://petshop.com/wp-admin/admin-ajax.php',
+                    type: 'POST',
+                    data: {
+                        action: 'wcsuccess_load_quick_view_product',
+                        product_id: product_id
+                    },
+                    success: function(response) {
+                        $('.quick-view-product').html(response);
+                        $('.quick-view-modal').fadeIn();
+                    }
+                });
+            });
+
+            // Đóng modal khi click vào nút đóng
+            $('.close-quick-view').on('click', function() {
+                $('.quick-view-modal').fadeOut();
+            });
+        });
+    </script>
+
+    <?php
+}
+
+
+// B4: Kết quả đổ ra từ AJAX quick view
+function wcsuccess_load_quick_view_product() {
+    $product_id = intval($_POST['product_id']);
+    $product = wc_get_product($product_id);
+
+    if ($product) {
+        ?>
+        <div class="quick-view-product">
+            <h2><?php echo $product->get_name(); ?></h2>
+          <div class="quick-view-image"><?php echo $product->get_image(); ?></div>
+          <div class="quick-view-price"><?php echo $product->get_price_html(); ?></div>
+          <div class="quick-view-description"><?php echo $product->get_short_description(); ?></div>
+          <a href="<?php echo $product->add_to_cart_url(); ?>" class="button"><?php echo $product->add_to_cart_text(); ?></a>
+        </div>
+        <?php
+    }
+    wp_die();
+}
+add_action('wp_ajax_wcsuccess_load_quick_view_product', 'wcsuccess_load_quick_view_product');
+add_action('wp_ajax_nopriv_wcsuccess_load_quick_view_product', 'wcsuccess_load_quick_view_product');
